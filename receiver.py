@@ -1,30 +1,55 @@
-from Crypto.Cipher import AES, PKCS1_OAEP
-from Crypto.PublicKey import RSA
 import json
 import base64
-from encryption_utils import AsymmetricEncryption, SymmetricEncryption
+import socket
+from utils import aes_decrypt, rsa_decrypt, verify_signature, load_key
 
-class Receiver:
-    def __init__(self, private_key, sender_public_key):
-        self.private_key = RSA.import_key(private_key)
-        self.sender_public_key = RSA.import_key(sender_public_key)
-        self.asym_enc = AsymmetricEncryption()
-        self.sym_enc = SymmetricEncryption()
+def receive_file(port, receiver_private_key, sender_public_key):
+    # 启动服务监听
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', port))
+        s.listen(1)
+        print(f"接收方正在监听端口 {port}...")
 
-    def receive_file(self, data):
-        data = json.loads(data)
-        enc_session_key = base64.b64decode(data['enc_session_key'])
-        nonce = base64.b64decode(data['nonce'])
-        tag = base64.b64decode(data['tag'])
-        ciphertext = base64.b64decode(data['ciphertext'])
-        signature = base64.b64decode(data['signature'])
+        conn, addr = s.accept()
+        print(f"来自 {addr} 的连接已建立！")
 
-        cipher_rsa = PKCS1_OAEP.new(self.private_key)
-        session_key = cipher_rsa.decrypt(enc_session_key)
+        with conn:
+            # 接收数据
+            data = conn.recv(65536)  # 最大接收 64KB 数据
+            data_packet = json.loads(data.decode('utf-8'))
 
-        file_data = self.sym_enc.decrypt(nonce, ciphertext, tag, session_key)
+            # 解码 Base64 数据
+            nonce = base64.b64decode(data_packet['nonce'])
+            ciphertext = base64.b64decode(data_packet['ciphertext'])
+            tag = base64.b64decode(data_packet['tag'])
+            encrypted_key = base64.b64decode(data_packet['encrypted_key'])
+            signature = base64.b64decode(data_packet['signature'])
+            filename = data_packet['filename']
 
-        if self.asym_enc.verify_signature(file_data, signature, self.sender_public_key):
-            return file_data
-        else:
-            raise ValueError("签名验证失败")
+            # 使用接收方私钥解密AES密钥
+            aes_key = rsa_decrypt(encrypted_key, receiver_private_key)
+
+            # 使用AES密钥解密文件内容
+            try:
+                file_data = aes_decrypt(nonce, ciphertext, tag, aes_key)
+
+                # 验证签名
+                if verify_signature(sender_public_key, file_data, signature):
+                    print("签名验证成功，文件未被篡改！")
+                    # 保存解密后的文件
+                    with open(f"received_{filename}", 'wb') as f:
+                        f.write(file_data)
+                    print(f"文件已保存为 received_{filename}")
+                else:
+                    print("签名验证失败，文件可能被篡改！")
+            except Exception as e:
+                print(f"文件解密或验证过程中出错：{e}")
+
+if __name__ == "__main__":
+    # 加载密钥
+    receiver_private_key = load_key('receiver_private.pem')
+    sender_public_key = load_key('sender_public.pem')
+
+    # 监听端口
+    port = 12345
+    receive_file(port, receiver_private_key, sender_public_key)

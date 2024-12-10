@@ -1,10 +1,8 @@
 import os
 import json
-import base64
-import socket
 from utils import aes_encrypt, rsa_encrypt, generate_signature, load_key
 
-def send_file(filename, receiver_ip, receiver_port, receiver_public_key, sender_private_key):
+def send_file(filename, receiver_public_key, sender_private_key):
     # 读取文件内容
     with open(filename, 'rb') as f:
         file_data = f.read()
@@ -21,7 +19,7 @@ def send_file(filename, receiver_ip, receiver_port, receiver_public_key, sender_
     # 生成数字签名（针对原始文件内容）
     signature = generate_signature(sender_private_key, file_data)
 
-    # 使用 Base64 对所有数据进行编码
+    # 封装数据包
     data_packet = {
         'nonce': base64.b64encode(nonce).decode(),
         'ciphertext': base64.b64encode(ciphertext).decode(),
@@ -31,23 +29,14 @@ def send_file(filename, receiver_ip, receiver_port, receiver_public_key, sender_
         'filename': os.path.basename(filename)
     }
 
-    # 转换为 JSON 格式
-    data_packet_json = json.dumps(data_packet)
+    # 保存数据包到文件
+    with open('data_packet.json', 'w') as f:
+        json.dump(data_packet, f)
 
-    # 建立网络连接并发送数据
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((receiver_ip, receiver_port))
-        s.sendall(data_packet_json.encode('utf-8'))
-        print("文件已发送！")
+    print("文件已加密并发送。")
 
 if __name__ == "__main__":
-    # 加载密钥
     receiver_public_key = load_key('receiver_public.pem')
     sender_private_key = load_key('sender_private.pem')
+    send_file('example.txt', receiver_public_key, sender_private_key)
 
-    # 文件路径和接收方信息
-    filename = '1.txt'
-    receiver_ip = '192.168.199.134'  # 替换为接收方的IP地址
-    receiver_port = 12345
-
-    send_file(filename, receiver_ip, receiver_port, receiver_public_key, sender_private_key)
