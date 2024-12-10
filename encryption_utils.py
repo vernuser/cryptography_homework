@@ -1,6 +1,7 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP, AES
 from Crypto.Random import get_random_bytes
+from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 
 class AsymmetricEncryption:
@@ -21,6 +22,19 @@ class AsymmetricEncryption:
         cipher_rsa = PKCS1_OAEP.new(self.key_pair)
         return cipher_rsa.decrypt(encrypted_data)
 
+    def sign_data(self, data):
+        h = SHA256.new(data)
+        signature = pkcs1_15.new(self.key_pair).sign(h)
+        return signature
+
+    def verify_signature(self, data, signature, public_key):
+        h = SHA256.new(data)
+        try:
+            pkcs1_15.new(public_key).verify(h, signature)
+            return True
+        except (ValueError, TypeError):
+            return False
+
 class SymmetricEncryption:
     def encrypt(self, data, key):
         cipher_aes = AES.new(key, AES.MODE_GCM)
@@ -31,7 +45,3 @@ class SymmetricEncryption:
     def decrypt(self, nonce, ciphertext, tag, key):
         cipher_aes = AES.new(key, AES.MODE_GCM, nonce=nonce)
         return cipher_aes.decrypt_and_verify(ciphertext, tag)
-
-def calculate_file_hash(file_data):
-    hash_obj = SHA256.new(file_data)
-    return hash_obj.digest()

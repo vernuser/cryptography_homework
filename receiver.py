@@ -1,31 +1,30 @@
+from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.PublicKey import RSA
+import json
 import base64
-from encryption_utils import SymmetricEncryption, AsymmetricEncryption, calculate_file_hash
+from encryption_utils import AsymmetricEncryption, SymmetricEncryption
 
 class Receiver:
-    def __init__(self, private_key):
-        self.private_key = private_key
+    def __init__(self, private_key, sender_public_key):
+        self.private_key = RSA.import_key(private_key)
+        self.sender_public_key = RSA.import_key(sender_public_key)
+        self.asym_enc = AsymmetricEncryption()
+        self.sym_enc = SymmetricEncryption()
 
-    def receive_file(self, encoded_data_packet):
-        decoded_data_packet = base64.b64decode(encoded_data_packet)
+    def receive_file(self, data):
+        data = json.loads(data)
+        enc_session_key = base64.b64decode(data['enc_session_key'])
+        nonce = base64.b64decode(data['nonce'])
+        tag = base64.b64decode(data['tag'])
+        ciphertext = base64.b64decode(data['ciphertext'])
+        signature = base64.b64decode(data['signature'])
 
-        nonce = decoded_data_packet[:16]
-        ciphertext = decoded_data_packet[16:-256-64]
-        tag = decoded_data_packet[-256-64:-256]
-        encrypted_symmetric_key = decoded_data_packet[-256:]
-        original_hash = decoded_data_packet[-256-64:-256]  # 保持为字节
+        cipher_rsa = PKCS1_OAEP.new(self.private_key)
+        session_key = cipher_rsa.decrypt(enc_session_key)
 
-        asymmetric_encryption = AsymmetricEncryption()
-        decrypted_symmetric_key = asymmetric_encryption.decrypt_with_private_key(encrypted_symmetric_key)
+        file_data = self.sym_enc.decrypt(nonce, ciphertext, tag, session_key)
 
-        symmetric_encryption = SymmetricEncryption()
-        decrypted_file_data = symmetric_encryption.decrypt(nonce, ciphertext, tag, decrypted_symmetric_key)
-
-        # Recalculate hash of decrypted file data
-        received_file_hash = calculate_file_hash(decrypted_file_data).encode()
-
-        if received_file_hash == original_hash:
-            print("文件传输成功，文件完整性验证通过。")
+        if self.asym_enc.verify_signature(file_data, signature, self.sender_public_key):
+            return file_data
         else:
-            print("文件传输失败，文件可能已被篡改。")
-
-        return decrypted_file_data
+            raise ValueError("签名验证失败")

@@ -1,25 +1,35 @@
+from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.Random import get_random_bytes
+from Crypto.PublicKey import RSA
+import json
 import base64
-from Crypto.Random import get_random_bytes  # 确保导入随机字节生成函数
-from encryption_utils import SymmetricEncryption, AsymmetricEncryption, calculate_file_hash
+from encryption_utils import AsymmetricEncryption, SymmetricEncryption
 
 class Sender:
-    def __init__(self, filepath, receiver_public_key):
+    def __init__(self, filepath, receiver_public_key, sender_private_key):
         self.filepath = filepath
-        self.receiver_public_key = receiver_public_key
+        self.receiver_public_key = RSA.import_key(receiver_public_key)
+        self.sender_private_key = RSA.import_key(sender_private_key)
+        self.asym_enc = AsymmetricEncryption()
+        self.sym_enc = SymmetricEncryption()
 
     def send_file(self):
         with open(self.filepath, 'rb') as f:
             file_data = f.read()
 
-        symmetric_key = get_random_bytes(16)
-        symmetric_encryption = SymmetricEncryption()
-        nonce, ciphertext, tag = symmetric_encryption.encrypt(file_data, symmetric_key)
+        session_key = get_random_bytes(16)
+        cipher_rsa = PKCS1_OAEP.new(self.receiver_public_key)
+        enc_session_key = cipher_rsa.encrypt(session_key)
 
-        file_hash = calculate_file_hash(file_data)
+        nonce, ciphertext, tag = self.sym_enc.encrypt(file_data, session_key)
+        signature = self.asym_enc.sign_data(file_data)
 
-        asymmetric_encryption = AsymmetricEncryption()
-        encrypted_symmetric_key = asymmetric_encryption.encrypt_with_public_key(symmetric_key, self.receiver_public_key)
+        data_to_send = {
+            'enc_session_key': base64.b64encode(enc_session_key).decode(),
+            'nonce': base64.b64encode(nonce).decode(),
+            'tag': base64.b64encode(tag).decode(),
+            'ciphertext': base64.b64encode(ciphertext).decode(),
+            'signature': base64.b64encode(signature).decode()
+        }
 
-        encoded_data_packet = base64.b64encode(nonce + ciphertext + tag + encrypted_symmetric_key + file_hash.encode())
-
-        return encoded_data_packet
+        return json.dumps(data_to_send)
