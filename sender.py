@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     # 文件路径和接收方信息
     filename = '1.txt'
-    receiver_ip = '192.168.199.134'  # 替换为接收方的IP地址
+    receiver_ip = '192.168.98.130'  # 替换为接收方的IP地址
     receiver_port = 12345
 
     send_file(filename, receiver_ip, receiver_port, receiver_public_key, sender_private_key)

@@ -1,7 +1,7 @@
 import os
 import json
 from utils import aes_encrypt, rsa_encrypt, generate_signature, load_key
-
+import base64
 def send_file(filename, receiver_public_key, sender_private_key):
     # 读取文件内容
     with open(filename, 'rb') as f:
@@ -38,5 +38,5 @@ def send_file(filename, receiver_public_key, sender_private_key):
 if __name__ == "__main__":
     receiver_public_key = load_key('receiver_public.pem')
     sender_private_key = load_key('sender_private.pem')
-    send_file('example.txt', receiver_public_key, sender_private_key)
+    send_file('1.txt', receiver_public_key, sender_private_key)
 
