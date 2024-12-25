@@ -4,7 +4,7 @@ import os
 import subprocess
 from sender import send_file
 from receiver import receive_file
-from utils import load_key
+from utils import load_key, generate_rsa_keypair, save_key
 
 class FileTransferApp:
     def __init__(self, root):
@@ -16,11 +16,6 @@ class FileTransferApp:
         # 设置窗口背景色
         self.root.configure(bg="#f5f5f5")
 
-        # 加载密钥
-        self.sender_private_key = load_key('sender_private.pem')
-        self.receiver_public_key = load_key('receiver_public.pem')
-        self.receiver_private_key = load_key('receiver_private.pem')
-        self.sender_public_key = load_key('sender_public.pem')
         # 创建UI
         self.create_main_frame()
 
@@ -106,12 +101,18 @@ class FileTransferApp:
         receive_button.pack(padx=10, pady=30, fill='x')
 
     def generate_keys(self):
-        """调用 generate_key.py 生成公钥和私钥"""
+        """生成公钥和私钥对并保存到文件"""
         try:
-            # 使用 subprocess 调用 generate_key.py 生成密钥对
-            subprocess.run(["python", "generate_key.py"], check=True)
-            messagebox.showinfo("成功", "公钥和私钥已生成！")
-        except subprocess.CalledProcessError as e:
+            sender_private, sender_public = generate_rsa_keypair()
+            receiver_private, receiver_public = generate_rsa_keypair()
+
+            save_key('sender_private.pem', sender_private)
+            save_key('sender_public.pem', sender_public)
+            save_key('receiver_private.pem', receiver_private)
+            save_key('receiver_public.pem', receiver_public)
+
+            messagebox.showinfo("成功", "公钥和私钥已生成并保存！")
+        except Exception as e:
             messagebox.showerror("错误", f"密钥生成失败：{e}")
 
     def select_file(self):
@@ -135,6 +136,10 @@ class FileTransferApp:
             return
 
         try:
+            # 加载密钥
+            self.sender_private_key = load_key('sender_private.pem')
+            self.receiver_public_key = load_key('receiver_public.pem')
+
             # 调用 sender.py 中的 send_file 函数
             send_file(filename, receiver_ip, int(receiver_port), self.receiver_public_key, self.sender_private_key)
             messagebox.showinfo("成功", "文件发送成功！")
@@ -145,6 +150,10 @@ class FileTransferApp:
         """接收文件"""
         try:
             port = 12345
+            # 加载密钥
+            self.receiver_private_key = load_key('receiver_private.pem')
+            self.sender_public_key = load_key('sender_public.pem')
+
             # 调用 receiver.py 中的 receive_file 函数
             receive_file(port, self.receiver_private_key, self.sender_public_key)
             messagebox.showinfo("成功", "文件接收成功！")
