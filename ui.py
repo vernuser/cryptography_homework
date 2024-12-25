@@ -10,7 +10,7 @@ class FileTransferApp:
     def __init__(self, root):
         self.root = root
         self.root.title("文件传输系统")
-        self.root.geometry("800x900")  # 增大窗口尺寸
+        self.root.geometry("800x900")  # 窗口大小
         self.root.resizable(False, False)  # 禁止调整窗口大小
 
         # 设置窗口背景色
@@ -21,7 +21,6 @@ class FileTransferApp:
         self.receiver_public_key = load_key('receiver_public.pem')
         self.receiver_private_key = load_key('receiver_private.pem')
         self.sender_public_key = load_key('sender_public.pem')
-
         # 创建UI
         self.create_main_frame()
 

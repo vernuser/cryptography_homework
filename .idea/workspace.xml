@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b490c3d2-83ec-4ee0-b2e3-44d7951d4337" name="更改" comment="加了ui" />
+    <list default="true" id="b490c3d2-83ec-4ee0-b2e3-44d7951d4337" name="更改" comment="加了ui">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encryption_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,30 +63,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.client.executor&quot;: &quot;Run&quot;,
-    &quot;Python.encryption_utils.executor&quot;: &quot;Run&quot;,
-    &quot;Python.file_transfer.executor&quot;: &quot;Run&quot;,
-    &quot;Python.generate_key.executor&quot;: &quot;Run&quot;,
-    &quot;Python.generate_keys.executor&quot;: &quot;Run&quot;,
-    &quot;Python.receiver.executor&quot;: &quot;Run&quot;,
-    &quot;Python.sender.executor&quot;: &quot;Run&quot;,
-    &quot;Python.server.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ui.executor&quot;: &quot;Run&quot;,
-    &quot;Python.utils.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;annn&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asus/Desktop/烽台校园实习/交接资料/实验室仿真台攻击脚本/实验室仿真台攻击脚本/仿真台攻击脚本11.22&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.client.executor": "Run",
+    "Python.encryption_utils.executor": "Run",
+    "Python.file_transfer.executor": "Run",
+    "Python.generate_key.executor": "Run",
+    "Python.generate_keys.executor": "Run",
+    "Python.receiver.executor": "Run",
+    "Python.sender.executor": "Run",
+    "Python.server.executor": "Run",
+    "Python.ui.executor": "Run",
+    "Python.utils.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "annn",
+    "last_opened_file_path": "D:/college/大三/应用密码学课设",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Python.ui">
     <configuration name="generate_key" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="应用密码学课设" />
@@ -235,6 +239,8 @@
       <workItem from="1734607228597" duration="4000" />
       <workItem from="1734770663055" duration="28000" />
       <workItem from="1734779266249" duration="2556000" />
+      <workItem from="1734782609505" duration="86000" />
+      <workItem from="1735107821817" duration="149000" />
     </task>
     <task id="LOCAL-00001" summary="加了互传">
       <option name="closed" value="true" />
@@ -292,7 +298,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734782367798</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="加了ui">
+      <option name="closed" value="true" />
+      <created>1734782673140</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1734782673140</updated>
+    </task>
+    <task id="LOCAL-00009" summary="加了ui">
+      <option name="closed" value="true" />
+      <created>1734782691683</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1734782691683</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
