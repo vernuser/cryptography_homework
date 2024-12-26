@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b490c3d2-83ec-4ee0-b2e3-44d7951d4337" name="更改" comment="已成功实现在虚拟机和物理机之间运行">
-      <change afterPath="$PROJECT_DIR$/ui.py" afterDir="false" />
+    <list default="true" id="b490c3d2-83ec-4ee0-b2e3-44d7951d4337" name="更改" comment="right">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/private.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/receiver_private.pem" beforeDir="false" afterPath="$PROJECT_DIR$/receiver_private.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/receiver_public.pem" beforeDir="false" afterPath="$PROJECT_DIR$/receiver_public.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sender_private.pem" beforeDir="false" afterPath="$PROJECT_DIR$/sender_private.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sender_public.pem" beforeDir="false" afterPath="$PROJECT_DIR$/sender_public.pem" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +20,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="PUSH_TAGS">
       <GitPushTagMode>
         <option name="argument" value="--tags" />
@@ -61,6 +55,7 @@
 }</component>
   <component name="ProjectId" id="2q0CtQoODIzSL6TNpmKqHaR1R2h" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="false" id="Update" />
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -292,7 +287,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734489392435</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="加了ui">
+      <option name="closed" value="true" />
+      <created>1735216706773</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1735216706773</updated>
+    </task>
+    <task id="LOCAL-00008" summary="right">
+      <option name="closed" value="true" />
+      <created>1735216770464</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1735216770464</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,7 +337,9 @@
     <MESSAGE value="加了中文" />
     <MESSAGE value="签名错误？" />
     <MESSAGE value="已成功实现在虚拟机和物理机之间运行" />
-    <option name="LAST_COMMIT_MESSAGE" value="已成功实现在虚拟机和物理机之间运行" />
+    <MESSAGE value="加了ui" />
+    <MESSAGE value="right" />
+    <option name="LAST_COMMIT_MESSAGE" value="right" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/$receiver.coverage" NAME="receiver 覆盖结果" MODIFIED="1734342809902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
